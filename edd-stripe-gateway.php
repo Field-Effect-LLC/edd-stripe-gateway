@@ -42,7 +42,8 @@ function hg_stripe_edd_checkout_js() {
 
 	if( isset($gateways['stripe_checkout']) AND get_the_ID() == $edd_options['purchase_page'] )
 	{
-		wp_enqueue_script( 'stripe', 'https://checkout.stripe.com/checkout.js');
+		wp_enqueue_script( 'stripe', 'https://checkout.stripe.com/checkout.js' );
+		wp_enqueue_script( 'edd-stripe-gateway-1', plugins_url('/js/edd-stripe-gateway.js', __FILE__ ));
 	}
 
 }
