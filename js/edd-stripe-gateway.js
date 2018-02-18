@@ -1,15 +1,36 @@
 jQuery(document).ready(function ($) {
-    jQuery("#edd_purchase_form").submit(function(event){ 
-        event.preventDefault();
-        return false;
+    
+    var paymentModeSelector = "input[name='payment-mode']";
+    
+    var checkMethodIsStripe = function() {
+        return jQuery(paymentModeSelector + ":checked").val() === 'stripe_checkout';
+    };
+    
+    var methodIsStripe = checkMethodIsStripe();
+    
+    jQuery(paymentModeSelector).on("change", function()
+    {
+        methodIsStripe = checkMethodIsStripe();
     });
-    //Credit: https://stackoverflow.com/a/1977126/864414
-    $(document).on("keypress", function(event) {
-        if (event.keyCode == 13)
+    
+    jQuery("#edd_purchase_form").submit(function(event){ 
+        if (methodIsStripe)
         {
             event.preventDefault();
-            jQuery("#edd-purchase-button").click();
             return false;
+        }
+    });
+    
+    //Credit: https://stackoverflow.com/a/1977126/864414
+    $(document).on("keypress", function(event) {
+        if (methodIsStripe)
+        {
+            if (event.keyCode == 13)
+            {
+                event.preventDefault();
+                jQuery("#edd-purchase-button").click();
+                return false;
+            }
         }
     });
 });
